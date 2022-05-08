@@ -1,9 +1,9 @@
 SRCS	=   main.cpp
 OBJS	=	${SRCS:.cpp=.o}
-CFLAGS	=   -O0 -Wall -Wextra -Werror --std=c++98 # -fsanitize=address
+CFLAGS	=   -O0 -g # -Wall -Wextra -Werror --std=c++98 -g #-fsanitize=address
 CC		=	clang++
 RM		=	-rm	-f
-HEAD	=   mutantstack.hpp
+HEAD	=   vector.hpp algobase.hpp iter.hpp map.hpp pair.hpp utils.hpp tree.hpp
 NAME	=	out
 
 %.o: %.cpp $(HEAD)
