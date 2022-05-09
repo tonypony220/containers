@@ -94,37 +94,39 @@ public:
 // stack
 
 #define stack_test
-// vector
-#define insert_end
-#define insert_iter
-#define front_back
-#define erase_iter
-#define erase_pos
-#define const_vector
-#define resize_vector
-#define ctor
-#define ctor_iter
-#define equal
-#define val_swap
-#define val_pop
-#define val_const
-#define reverse
-#define assign_test
-#define ctor_copy
 
-// map
+// - - - -  vector - - - - - 
+#define vector_push_back
+#define insert_end
+//#define insert_iter
+//#define front_back
+//#define erase_iter
+//#define erase_pos
+//#define const_vector
+//#define resize_vector
+//#define ctor
+//#define ctor_iter
+//#define equal
+//#define val_swap
+//#define val_pop
+//#define val_const
+//#define reverse
+//#define assign_test
+//#define ctor_copy
+
+		// map
 //#define key_const
-#define map_ctor
-#define map_equal
-#define map_less
-#define map_operator_assign
-#define map_iter
-#define map_reverse_iter
-#define map_insert_hint
-#define map_operator_random_access
-#define map_utilz
-#define map_erase
-#define map_count
+//#define map_ctor
+//#define map_equal
+//#define map_less
+//#define map_operator_assign
+//#define map_iter
+//#define map_reverse_iter
+//#define map_insert_hint
+//#define map_operator_random_access
+//#define map_utilz
+//#define map_erase
+//#define map_count
 
 
 template <class T, class L>
@@ -290,80 +292,93 @@ void fill(v & vec) {
 int main() {
 #ifdef stack_test
 	{
-		p("\n ------- insert ------- ");
-		bool ok = true;
-		 ft::stack<int> f;
-		std::stack<int> s;
-		for (int i = 0; i < 6; i++)  {
-			f.push(i);
-			s.push(i);
+		p("\n ------- stack ------- ");
+		 ft::stack<std::string> f;
+		std::stack<std::string> s;
+
+		p("\n ------- empty size ------- ");
+		put( f.empty() == s.empty() );
+		put( f.size() == s.size() );
+		p("\n ------- push pop ------- ");
+		int x = 5;
+		for (int i = 0; i < x; i++) {
+			std::string str(itoa(i));
+			f.push(str);
+			s.push(str);
+			p("pushed: ", str);
+		}
+		for (int i = 0; i < x; i++) {
+			put(f.top() == s.top());
+			f.pop(); s.pop();
 		}
 	}
 #endif
-#ifdef insert_nd
-	{
-		p("\n ------- insert ------- ");
-		bool ok = true;
-		ft::vector<int> ftVector;
-		std::vector<int> stdVector;
-		for (int i = 0; i < 6; i++) {
-			ftVector.push_back(i);
-			stdVector.push_back(i);
-		}
-		ftVector.insert(ftVector.begin() + 3, ft::vector<int>::size_type(4),
-						20);
-		stdVector.insert(stdVector.begin() + 3, ft::vector<int>::size_type(4),
-						 20);
-		p("FT:");
-		print_container(ftVector);
-		p("STD:");
-		print_container(stdVector);
-		ft::vector<int>::iterator ift = ftVector.begin();
-		std::vector<int>::iterator istd = stdVector.begin();
-		while (ok && ift != ftVector.end() && istd != stdVector.end()) {
-			if (*ift != *istd) {
-				ok = false;
-				break;
-			}
-			ift++;
-			istd++;
-		}
+#ifdef vector_push_back
+	/* { */
+	/* 	p("\n ------- insert ------- "); */
+	/* 	bool ok = true; */
+	/* 	ft::vector<int> ftVector; */
+	/* 	std::vector<int> stdVector; */
+	/* 	for (int i = 0; i < 6; i++) { */
+	/* 		ftVector.push_back(i); */
+	/* 		stdVector.push_back(i); */
+	/* 	} */
+	/* 	ftVector.insert(ftVector.begin() + 3, ft::vector<int>::size_type(4), */
+	/* 					20); */
+	/* 	stdVector.insert(stdVector.begin() + 3, ft::vector<int>::size_type(4), */
+	/* 					 20); */
+	/* 	p("FT:"); */
+	/* 	print_container(ftVector); */
+	/* 	p("STD:"); */
+	/* 	print_container(stdVector); */
+	/* 	ft::vector<int>::iterator ift = ftVector.begin(); */
+	/* 	std::vector<int>::iterator istd = stdVector.begin(); */
+	/* 	while (ok && ift != ftVector.end() && istd != stdVector.end()) { */
+	/* 		if (*ift != *istd) { */
+	/* 			ok = false; */
+	/* 			break; */
+	/* 		} */
+	/* 		ift++; */
+	/* 		istd++; */
+	/* 	} */
 
-		put(ok);
-	}
+	/* 	put(ok); */
+	/* } */
 	{
-		p("\n ------- insert end ------- ");
-		bool ok = true;
-		ft::vector<int> ftVector;
-		std::vector<int> stdVector;
-		for (int i = 0; i < 6; i++) {
-			ftVector.push_back(i);
-			stdVector.push_back(i);
+		p("\n ------- push_back ------- ");
+//		bool ok = true;
+//		
+		 ft::vector<std::string> f;
+		std::vector<std::string> s;
+		/* std::cout << sizeof (ft::vector<std::string>::pointer) << "\n"; */
+		timer t;
+		int x = 200;	
+		t.arm1();
+		for (int i = 0; i < x; i++) {
+			std::string str(itoa(i));
+			s.push_back(str);
+			/* print_container(f); */
 		}
-		stdVector.insert(stdVector.end(), ft::vector<int>::size_type(4), 11111);
-		p("STD:");
-		print_container(stdVector);
-		ftVector.insert(  ftVector.end(), ft::vector<int>::size_type(4), 11111);
-		p("FT:");
-		print_container(ftVector);
-		 ft::vector<int>::iterator  ift = ftVector.begin();
-		std::vector<int>::iterator istd = stdVector.begin();
-		while (ok && ift != ftVector.end() && istd != stdVector.end()) {
-			if (*ift != *istd) {
-				ok = false;
-				break;
-			}
-			ift++;
-			istd++;
+		t.end1();
+		/* f.reserve(x); */
+		for (int i = 0; i < x; i++) {
+			/* std::string str(itoa(i)); */
+			std::string str("A");
+			f.push_back(str);
+			/* print_container(f); */
 		}
-		put(ok);
+		t.arm2();
+		t.end2();
+
+		t.diff();
+		put(compare(f, s));
 	}
 
 #endif
 
 #ifdef insert_iter
 	{
-		p("\n ------- insert iter [0] ------- ");
+		p("\n ------- insert ------- ");
 		bool ok = true;
 		std::vector<int> smpl;
 		ft::vector<int> ftVector;
@@ -478,6 +493,34 @@ int main() {
 		std::vector<int> stdVector;
 		timer t;
 		fill_both(ftVector, stdVector, 20000);
+		t.arm1();
+		stdVector.erase( stdVector.begin() + 1, stdVector.begin() + 3);
+		stdVector.erase( stdVector.begin(), stdVector.begin() + 3);
+//		print_container(stdVector);
+		t.end1();
+		t.arm2();
+		ftVector.erase(  ftVector.begin() + 1, ftVector.begin() + 3);
+		ftVector.erase(  ftVector.begin(), ftVector.begin() + 3);
+//		print_container(ftVector);
+		t.end2();
+		t.diff();
+		put(compare(ftVector, stdVector));
+	}
+
+#endif
+#ifdef erase_iter
+	{
+		p("\n ------- erase string ------- ");
+
+		 ft::vector<std::string> ftVector;
+		std::vector<std::string> stdVector;
+		timer t;
+		int x = 40;
+		for (int i = 0; i < x; i++) {
+			std::string str(itoa(i) + "number");
+			ftVector.push_back(str);
+			stdVector.push_back(str);
+		}
 		t.arm1();
 		stdVector.erase( stdVector.begin() + 1, stdVector.begin() + 3);
 		stdVector.erase( stdVector.begin(), stdVector.begin() + 3);

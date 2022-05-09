@@ -68,8 +68,9 @@ template <> struct is_integral<unsigned long long>	: public integral_constant<bo
 template <typename T>
 typename EnableIf<!is_integral<T>::value, void>::type
 print_container(T a) {
+	std::cout << "data: ";
 	for (typename T::iterator i = a.begin(); i != a.end(); i++)
-		std::cout << *i << " ";
+		std::cout << "(" << *i << ") ";
 	std::cout << std::endl;
 }
 

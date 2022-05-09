@@ -6,6 +6,7 @@
 #include "iter.hpp"
 #include "algobase.hpp"
 #include "utils.hpp"
+#include <iostream> // ptrdiff
 #define ADDITIONAL 10
 #pragma once
 
@@ -86,6 +87,7 @@ namespace ft {
 
     ~vector() {
 		if (start)
+			/* delete[] start; */
 			allocator.deallocate(start, capacity());
 	}
 
@@ -171,24 +173,36 @@ namespace ft {
 		//		catch(std::bad_alloc const& ex) { std::cout << ex.what() << '\n'; }
 	}
 	void 	  			   reserve(size_type sz) {
-		  if (capacity() >= sz)
-			  return;
+		if (capacity() >= sz) 
+			return;
 		iterator begin_old = start; // start = 0 if not allocated
 //		iterator start_old = start;
-		sz = std::max(sz, static_cast<size_type>(1));
+		sz = std::max( sz, static_cast<size_type>(1) );
 //		sz == 0 && (sz = 1);
-		size_type old_size(size());
+		size_type old_size( size() );
+		size_type new_size = sz * 2;
 
-		start = allocator.allocate(sz * 2); // may throw. not catches inside
+		start = allocator.allocate( new_size ); // may throw. not catches inside
+		//start = new T[new_size]; // may throw. not catches inside
+		iterator s = start;
+		std::cout << new_size << ":RESERVE " << start << "\n";
+		for (; s < start + new_size - 1; s++ ) {
+			*s = T();
+			std::cout << ".";
+		}
+
 //		iterator begin_new = start;
-		ft::__copy(begin_old, finish, start);
 //		while (begin_old && begin_old != finish) {
 //			*begin_new++ = *begin_old++;
 //		}
-		if (begin_old)
-			allocator.deallocate(begin_old, end_of_storage - begin_old);
+		if (begin_old) {
+			ft::__copy(begin_old, finish, start);
+			//delete[] begin_old;
+			allocator.deallocate(begin_old, capacity());
+			/* allocator.deallocate(begin_old, end_of_storage - begin_old); */
+		}
 		finish = start + old_size;// - 1;
-		end_of_storage = start + 2 * sz;
+		end_of_storage = start + new_size;
 	}
 	size_type 			   capacity() const { return size_type(end_of_storage - start); }
 	bool 	  			   empty() const    { return size() == 0; }
@@ -203,9 +217,31 @@ namespace ft {
 	const_reference 	   back() const   		         { return back(); };
 
 	void 	 			   push_back(const T & x) {
-		if (finish == end_of_storage) // size() > capacity()
-			reserve(capacity() + 1 );
-		*finish++ = x;
+
+		/* std::cout << "finish: " << finish << '\n'; */
+		/* std::cout << "end storage: " << end_of_storage << '\n'; */
+
+		//if (finish == end_of_storage) // size() > capacity()
+
+		/* std::cout << "start: " << start << '\n'; */
+		/* std::cout << "finish: " << finish << '\n'; */
+		/* std::cout << "end storage: " << end_of_storage << '\n'; */
+		std::cout << "capacity: " << capacity() << "  " ;
+		std::cout << "size: " << size() << "\n\n";
+		//if (finish == end_of_storage) // size() > capacity()
+		if ( size() == capacity() ) // size() > capacity()
+			reserve( capacity() + 1 );
+		std::cout << "capacity: " << capacity() << "  " ;
+		std::cout << "size: " << size() << "\n\n";
+		/* print_container(*this); */
+		/* std::cout << "start: " << start << '\n'; */
+		/* std::cout << "finish: " << finish << '\n'; */
+		/* std::cout << "end storage: " << end_of_storage << '\n'; */
+
+		construct(finish, x);	
+		finish++;
+		/* allocator.construct(finish++, x); */
+		/* *finish++ = x; */
 	}
 	void 	 			   pop_back() { finish--; }
 

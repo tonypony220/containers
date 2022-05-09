@@ -14,9 +14,6 @@ namespace ft {
     Container c;
   public:
     explicit stack( const Container & cont = Container() ) :  c(cont)  {}
-		/* value_type(cont.value_type), */
-	  	/* size_type(cont.size_type), */
-	  	/* container_type(cont.container_type ) */ 
 	~stack( void ) {}
 	stack( const stack & copy ) { *this = copy; }
 	stack & operator=( const stack & other ) { 
