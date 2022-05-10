@@ -48,6 +48,31 @@ namespace ft {
 			  throw std::out_of_range("");
 		  return start[n];
 	}
+
+	iterator alloc( size_type sz ) {
+#         ifdef __STL_USE_EXCEPTIONS
+      try {
+#         endif
+		iterator result = allocator.allocate( sz ); // may throw. not catches inside //start = new T[sz];
+		if ( !result ) {
+			dealoc();
+			//allocator.deallocate(begin_old, capacity()); //	delete[] begin_old;
+			throw std::bad_alloc();
+		}
+        return result;
+#         ifdef __STL_USE_EXCEPTIONS
+      }
+      catch(...) {
+		dealoc();
+		//allocator.deallocate(begin_old, capacity()); //	delete[] begin_old;
+        throw;
+      }
+#         endif
+	}
+	void dealoc() {
+		/* delete[] start; */
+		allocator.deallocate(start, capacity());
+	}
   public:
 
 	explicit vector(const Allocator & alloc = Allocator())
@@ -79,43 +104,34 @@ namespace ft {
 
 	  // other ctors
 	  vector(const vector<T,Allocator> & x)
-	   	: allocator(Allocator()), start(NULL), finish(NULL), end_of_storage(NULL)
-	   	{
-	//		reserve(x.size());
+	   	: allocator(Allocator()), start(NULL), finish(NULL), end_of_storage(NULL) {
+	//		reserve(x.size())
 			*this = x;
 	    }
 
     ~vector() {
 		if (start)
-			/* delete[] start; */
-			allocator.deallocate(start, capacity());
+			dealoc();
 	}
 
     vector<T, Allocator> & operator=(const vector<T, Allocator> & x) {
 		if (&x != this) {
 			reserve(x.size());
 			assign(x.begin(), x.end());
-//			vector<T, Allocator>::iterator i = this->begin();
-//			for (vector<T, Allocator>::iterator it = x.begin();
-//				 it != end(); it++) {
-//				*i++ = *it;
-//			}
 		}
 		return *this;
 	}
 
-	  // todo ##############
     template <class InputIterator>
        void assign(InputIterator first, InputIterator last) {
-		  erase(begin(), end());
+		  //erase(begin(), end());
+		  clear();
 		  insert(begin(), first, last);
-//		  iterator i = this->begin();
-//		  for (; first!=last; first++, i++) {
-//			  *i = *first;
-//		  }
-	  }
+	   }
+
      void assign(size_type n, const T & u) {
-		 erase(begin(), end());
+		 clear();
+		 //erase(begin(), end());
 		 insert(begin(), n, u);
 	 }
      allocator_type get_allocator() const;
@@ -135,74 +151,52 @@ namespace ft {
 	}
 	size_type 			   size() const   { return size_type(finish - start); }
 
-	//return std::numeric_limits<difference_type>::max();
 	size_type 			   max_size() const { return size_type(-1) / sizeof(T); }
-//		return allocator.max_size(); }
 
-	// todo check all resize and reserve
 	void 	  			   resize(size_type new_size, T c = T()) {
 		if (new_size < size())
 			erase(begin() + new_size, end());
 		else
 			insert(end(), new_size - size(), c);
-		// todo ####### erase
-//		if (sz <= size()) {
-//			finish = start + sz;
-//			return;
-//		}
-//		iterator begin_old = start; // start = 0 if not allocated
-//		iterator start_old = start;
-//		sz == 0 && (sz = 1);
-//		start = allocator.allocate(2 * sz); // may throw. not catches inside
-//		end_of_storage = start + 2 * sz;
-//		iterator begin_new = start;
-//		while (begin_old != finish) {
-//			*begin_new++ = *begin_old++;
-//			sz--;
-//		}
-//		while (sz--) // finish = start + sz; while (begin_new != finish) ...
-//			*begin_new++ = c;
-//		if (start_old)
-//			allocator.deallocate(start_old, finish - start_old);
-//		finish = begin_new;
-
-		/// to save time will not initialize additional space
-		/// for (; it_new != end_of_storage; it_new++)
-		///		*it_new = c;
-		//		catch(std::bad_array_new_length const& ex) { std::cout << ex.what() << '\n'; }
-		//		catch(std::bad_alloc const& ex) { std::cout << ex.what() << '\n'; }
 	}
 	void 	  			   reserve(size_type sz) {
 		if (capacity() >= sz) 
 			return;
 		iterator begin_old = start; // start = 0 if not allocated
-//		iterator start_old = start;
-		sz = std::max( sz, static_cast<size_type>(1) );
-//		sz == 0 && (sz = 1);
+		sz = std::max( sz, static_cast<size_type>(1) ) * 2;
 		size_type old_size( size() );
-		size_type new_size = sz * 2;
+		iterator begin_new = alloc( sz ); // may throw. not catches inside //start = new T[sz];
+		
+		// to see this dirty memory which appears on multiple reallocation
+//		 for ( size_t i  = 0 ; i < sz * 24; i++) {
+//			char *x = reinterpret_cast<char*>(start) + i;
+//			if (*(x ))
+//			 std::cout << "WTF" << int(*x );
+//		 }
+		/* std::cout << sz << ":RESERVE " << start << "\n"; */
 
-		start = allocator.allocate( new_size ); // may throw. not catches inside
-		//start = new T[new_size]; // may throw. not catches inside
-		iterator s = start;
-		std::cout << new_size << ":RESERVE " << start << "\n";
-		for (; s < start + new_size - 1; s++ ) {
-			*s = T();
-			std::cout << ".";
-		}
+	//	std::memset(start, 0, sizeof(T) * sz); // this ok
 
-//		iterator begin_new = start;
-//		while (begin_old && begin_old != finish) {
-//			*begin_new++ = *begin_old++;
-//		}
+	/* this does not work; */
+	//	print_container(*this);
+	//	for (; s < start + new_size - 1; s++ ) {
+	//		*s = T();
+	//		std::cout << ".";
+	//	}
+
 		if (begin_old) {
-			ft::__copy(begin_old, finish, start);
-			//delete[] begin_old;
-			allocator.deallocate(begin_old, capacity());
-			/* allocator.deallocate(begin_old, end_of_storage - begin_old); */
+			iterator j = begin_new;
+			for ( iterator i = begin_old; i != finish; i++, j++ ) {
+				// can't use this because of dirty memory. Only if memset 
+				// ft::__copy(begin_old, finish, start);
+				// construct(j, *i) using this also seems well
+				allocator.construct(j, *i); 
+			}
+			dealoc();
 		}
+		start = begin_new;
 		finish = start + old_size;// - 1;
-		end_of_storage = start + new_size;
+		end_of_storage = start + sz;
 	}
 	size_type 			   capacity() const { return size_type(end_of_storage - start); }
 	bool 	  			   empty() const    { return size() == 0; }
@@ -226,22 +220,14 @@ namespace ft {
 		/* std::cout << "start: " << start << '\n'; */
 		/* std::cout << "finish: " << finish << '\n'; */
 		/* std::cout << "end storage: " << end_of_storage << '\n'; */
-		std::cout << "capacity: " << capacity() << "  " ;
-		std::cout << "size: " << size() << "\n\n";
+		/* std::cout << "capacity: " << capacity() << "  " ; */
+		/* std::cout << "size: " << size() << "\n\n"; */
 		//if (finish == end_of_storage) // size() > capacity()
 		if ( size() == capacity() ) // size() > capacity()
 			reserve( capacity() + 1 );
-		std::cout << "capacity: " << capacity() << "  " ;
-		std::cout << "size: " << size() << "\n\n";
-		/* print_container(*this); */
-		/* std::cout << "start: " << start << '\n'; */
-		/* std::cout << "finish: " << finish << '\n'; */
-		/* std::cout << "end storage: " << end_of_storage << '\n'; */
-
-		construct(finish, x);	
-		finish++;
-		/* allocator.construct(finish++, x); */
-		/* *finish++ = x; */
+		//construct(finish, x);
+		allocator.construct(finish++, x);
+		/* construct(finish, x); */	
 	}
 	void 	 			   pop_back() { finish--; }
 
@@ -277,14 +263,13 @@ namespace ft {
 		/// position could be equal finish. and make one excess move
 		if (position <= finish) {
 			for (iterator it = n + last; last != position - 1; it--, last--) {
-//				p (it - start, last - start);
-//				p(position == last);
-				*it = *last;
+				allocator.construct(it, *last); // *it = *last; <- wrong cause of dirty memory
 			}
 		}
 		finish = begin() + new_size;
 		for (; n > 0; n--)
-			*position++ = x;
+			allocator.construct(position++, x); //*position++ = x; <- wrong cause of dirty memory
+
 	}
 	template <class InputIterator>
 	typename EnableIf<!is_integral<InputIterator>::value, void>::type

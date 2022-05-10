@@ -2,6 +2,8 @@
 #include "stack.hpp"
 #include "vector.hpp"
 #include <vector>
+#include <set>
+#include "set.hpp"
 #include <iostream>
 #include <memory>
 #include <stack>
@@ -14,8 +16,50 @@
 #include <unordered_map>
 #include <iomanip>
 #include <sstream>
-using namespace ft;
+//using namespace ft;
 #include <chrono>
+
+// stack
+
+//#define stack_test
+
+// - - - -  vector - - - - - 
+//#define vector_push_back
+//#define insert_end
+//#define insert_iter
+//#define front_back
+//#define erase_iter
+//#define erase_pos
+//#define const_vector
+//#define resize_vector
+//#define ctor
+//#define ctor_iter
+//#define equal
+//#define val_swap
+//#define val_pop
+//#define val_const
+//#define reverse
+//#define assign_test
+//#define ctor_copy
+
+	 /*  map */
+//#define key_const
+//#define map_ctor
+//#define map_equal
+//#define map_less
+//#define map_operator_assign
+//#define map_iter
+//#define map_reverse_iter
+//#define map_insert_hint
+//#define map_operator_random_access
+//#define map_utilz
+//#define map_erase
+//#define map_count
+
+#define set_ctor
+#define set_equal
+#define set_less
+#define set_operator_ass
 
 // the work...
 //auto t_end = std::chrono::high_resolution_clock::now();
@@ -90,43 +134,6 @@ public:
 //	std::cout << s.allocate() << std::endl;
 //
 //}
-
-// stack
-
-#define stack_test
-
-// - - - -  vector - - - - - 
-#define vector_push_back
-#define insert_end
-//#define insert_iter
-//#define front_back
-//#define erase_iter
-//#define erase_pos
-//#define const_vector
-//#define resize_vector
-//#define ctor
-//#define ctor_iter
-//#define equal
-//#define val_swap
-//#define val_pop
-//#define val_const
-//#define reverse
-//#define assign_test
-//#define ctor_copy
-
-		// map
-//#define key_const
-//#define map_ctor
-//#define map_equal
-//#define map_less
-//#define map_operator_assign
-//#define map_iter
-//#define map_reverse_iter
-//#define map_insert_hint
-//#define map_operator_random_access
-//#define map_utilz
-//#define map_erase
-//#define map_count
 
 
 template <class T, class L>
@@ -239,18 +246,34 @@ void fill_both(v & vec, t & vec2, int num = 40) {
 		vec2.push_back(i);
 	}
 }
+template <class s>
+void fill_set(s & m, std::string, int num = 40) {
+	for (int i = 0; i < num; i++) 
+		m.insert(itoa(i));
+}
+template <class s>
+void fill_set(s & m, int, int num = 40) {
+	for (int i = 0; i < num; i++) 
+		m.insert(i);
+}
+
+/* template <> */
+/* void fill_set<int>(ft::set<int> & m, int num, int) { */
+/* 	for (int i = 0; i < num; i++) */ 
+/* 		m.insert(i); */
+/* } */
 template <class key, class val>
 void fill_map(ft::map<key, val> & m, int num = 40) {
 	for (int i = 0; i < num; i++) {
 		 m.insert(ft::make_pair(i, i));
 	}
 }
-template <class key, class val>
-void fill_map(std::map<key, val> & m, int num = 40) {
-	for (int i = 0; i < num; i++) {
-		m.insert(std::make_pair(i, i));
-	}
-}
+/* template <class key, class val> */
+/* void fill_map(std::map<key, val> & m, int num = 40) { */
+/* 	for (int i = 0; i < num; i++) { */
+/* 		m.insert(std::make_pair(i, i)); */
+/* 	} */
+/* } */
 template <typename M, typename V>
 void map_to_vec( const  M & m, V & v ) {
 	for( typename M::const_iterator it = m.begin(); it != m.end(); ++it ) {
@@ -300,17 +323,38 @@ int main() {
 		put( f.empty() == s.empty() );
 		put( f.size() == s.size() );
 		p("\n ------- push pop ------- ");
-		int x = 5;
+		int x = 10;
 		for (int i = 0; i < x; i++) {
 			std::string str(itoa(i));
-			f.push(str);
-			s.push(str);
-			p("pushed: ", str);
+			f.push(str); s.push(str);
+			//p("pushed: ", str);
 		}
 		for (int i = 0; i < x; i++) {
 			put(f.top() == s.top());
 			f.pop(); s.pop();
 		}
+		 ft::stack<std::string> f2;
+		std::stack<std::string> s2;
+		for (int i = 0; i < x; i++) {
+			std::string str(itoa(i));
+			f2.push(str); 
+			s2.push(str);
+			f.push(str); 
+			s.push(str);
+			//p("pushed: ", str);
+		}
+		p("\n ------- operator== ------- ");
+		put( (f2 == f) == (s2 == s));
+		p("\n ------- operator!= ------- ");
+		put( (f2 != f) == (s2 != s));
+		p("\n ------- operator<= ------- ");
+		put( (f2 <= f) == (s2 <= s));
+		p("\n ------- operator>= ------- ");
+		put( (f2 >= f) == (s2 >= s));
+		p("\n ------- operator<  ------- ");
+		put( (f2 < f) == (s2 < s));
+		p("\n ------- operator>  ------- ");
+		put( (f2 > f) == (s2 > s));
 	}
 #endif
 #ifdef vector_push_back
@@ -559,6 +603,7 @@ int main() {
 		f = ftVector;
 		t.end2();
 		t.diff();
+		put(compare(s, f));
 	}
 
 #endif
@@ -828,9 +873,9 @@ int main() {
 #ifdef map_equal
 	{
 		p("\n ------- map == and insert value  ------- ");
-		ft::map<int, int> f;
+		ft::map<int, int>  f;
 		ft::map<int, int>  f1;
-		std::map<int, int>  s;
+		std::map<int, int> s;
 		timer t;
 		p("insert val time");
 		t.arm2();
@@ -1229,12 +1274,150 @@ int main() {
 		its = s.lower_bound(55);
 		t.end1();
 		/* t.diff(); :) */ 
-		put(itf->first == its->first);
+		put(itf->first  == its->first);
 		put(itf->second == its->second);
 		itf = f.upper_bound(55);
 		its = s.upper_bound(55);
 		put(itf->first == its->first);
 		put(itf->second == its->second);
+	}
+#endif
+#ifdef set_ctor
+	{
+		p("\n ------- set copy ctor ------- ");
+//		ft::map<int, int>  f;
+		timer t;
+		 ft::set<std::string>  f;
+		std::set<std::string>  s;
+		int x = 100;
+		for (int i = 0; i < x; i++) {
+			std::string str(itoa(i));
+			f.insert(str);
+			s.insert(str);
+		}
+		t.arm1();
+		std::set<std::string>  s1(s);
+		t.end1();
+		t.arm2();
+		ft::set<std::string>  f1(f);
+		t.end2();
+		t.diff();
+
+		put(f1 == f);
+		f.insert("j");
+		s.insert("j");
+		put((f1 != f) == (s1 != s));
+
+		t.arm1();
+		std::set<std::string>  s2(s.begin(), s.end());
+		t.end1();
+		t.arm2();
+		ft::set<std::string>  f2(f.begin(), f.end());
+//		ft::set<int, int>  f5(3, 4);
+		t.end2();
+		t.diff();
+		put(f2 == f);
+		put(compare(f2, s2));
+	}
+#endif
+#ifdef set_equal
+	{
+		p("\n ------- set == and insert value  ------- ");
+		 ft::set<std::string>  f;
+		 /* ft::set<std::string>  f1; */
+		std::set<std::string> s;
+		timer t;
+		p("insert val time");
+		t.arm2();
+		fill_set(f, "type", 200);
+		t.end2();
+
+		t.arm1();
+		fill_set(s, "type", 200);
+		t.end1();
+		t.diff();
+
+		put(compare(f, s));
+//		put((s2 == s));
+//		put((s2 < s));
+
+	}
+#endif
+#ifdef set_less
+	{
+		 ft::set<std::string>  f;
+		std::set<std::string> s;
+		timer t;
+		p("insert val time");
+
+		fill_set(f, "", 200);
+		fill_set(s, "", 200);
+		 ft::set<std::string>  f2(f);
+		std::set<std::string> s2(s);
+
+		
+		p("\n ------- operator== ------- ");
+		{
+		 t.arm2();
+		 bool ok1 = f2 == f;
+		 t.end2();
+
+		 t.arm1();
+		 bool ok2 = s2 == s;
+		 t.end1();
+
+		 t.diff();
+		 put( ok1 == ok2 );
+		}
+
+		p("\n ------- operator!= ------- ");
+		put( (f2 != f) == (s2 != s));
+		p("\n ------- operator<= ------- ");
+		put( (f2 <= f) == (s2 <= s));
+		p("\n ------- operator>= ------- ");
+		put( (f2 >= f) == (s2 >= s));
+		p("\n ------- operator<  ------- ");
+		{
+		 t.arm2();
+		 bool ok1 = f2 < f;
+		 t.end2();
+
+		 t.arm1();
+		 bool ok2 = s2 < s;
+		 t.end1();
+
+		 t.diff();
+		 put( ok1 == ok2 );
+		}
+		put( (f2 < f) == (s2 < s));
+		p("\n ------- operator>  ------- ");
+		put( (f2 > f) == (s2 > s));
+		p("\n ------- set < operator ------- ");
+	}
+#endif
+#ifdef set_operator_ass
+	{
+		p("\n ------- set operator= ------- ");
+//		ft::map<int, int>  f;
+		timer t;
+		 ft::set<std::string>  f;
+		std::set<std::string>  s;
+		int x = 100;
+		fill_set(f, "", 200);
+		fill_set(s, "", 200);
+
+		std::set<std::string>  s1;
+		t.arm1();
+		s1 = s;
+		t.end1();
+
+		ft::set<std::string>  f1;
+		t.arm2();
+		f1 = f;
+		t.end2();
+		t.diff();
+
+		put(f1 == f);
 	}
 #endif
 	return 0;

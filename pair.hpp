@@ -9,6 +9,11 @@ namespace ft {
 	 typedef Result result_type;
  };
 
+ template <class T>
+ struct identity : public unary_function<T, T> {
+	 const T& operator()(const T& x) const { return x; }
+ };
+
  template <class Arg1, class Arg2, class Result>
  struct binary_function {
 	 typedef Arg1 first_argument_type;

@@ -66,6 +66,7 @@ namespace ft
 	template <class T1, class T2>
 	void construct(T1* p, const T2& value) {
 		new (p) T1(value);
+       // new (reinterpret_cast<void*>(p)) T1 ( value );
 	}
 
 }

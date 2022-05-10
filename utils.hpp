@@ -31,6 +31,7 @@ void p(const T & t, const T2 & t2, const T3 & t3) { std::cout << t << ' ' << t2 
 
 
 namespace ft {
+
 template <bool condition, typename Type>
 struct EnableIf;
 
@@ -46,6 +47,8 @@ struct integral_constant {
 	typedef integral_constant type;
 	operator value_type() const { return value; }
 };
+
+
 
 template <class T> struct is_integral				: public integral_constant<T, false> {};
 template <> struct is_integral<bool>				: public integral_constant<bool, true> {};
@@ -64,6 +67,13 @@ template <> struct is_integral<long long>			: public integral_constant<bool, tru
 template <> struct is_integral<unsigned long long>	: public integral_constant<bool, true> {};
 //template <T>
 //typename EnableIf<!std::is_integral<T>::value, void>::type a() {}
+
+// for tests
+template <class T> 
+struct is_str;// { static const bool value = false; };
+
+template <>
+struct is_str<std::string> { static const bool value = true; };
 
 template <typename T>
 typename EnableIf<!is_integral<T>::value, void>::type

@@ -3,7 +3,7 @@ OBJS	=	${SRCS:.cpp=.o}
 CFLAGS	=   -O0 -g #-fsanitize=address # -fsanitize=undefined -Wall -Wextra -Werror --std=c++98 -g 
 CC		=	clang++
 RM		=	-rm	-f
-HEAD	=   vector.hpp algobase.hpp iter.hpp map.hpp pair.hpp utils.hpp tree.hpp
+HEAD	=   vector.hpp algobase.hpp iter.hpp map.hpp pair.hpp utils.hpp tree.hpp stack.hpp
 NAME	=	out
 
 %.o: %.cpp $(HEAD)
