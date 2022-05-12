@@ -375,9 +375,9 @@ namespace ft {
 	 								iterator;
 	 typedef tree_iterator<value_type, const_reference, const_pointer>
 	 								const_iterator;
-	 typedef reverse_iterator<const_iterator>
+	 typedef ft::reverse_iterator<const_iterator>
 	         						const_reverse_iterator;
-	 typedef reverse_iterator<iterator>
+	 typedef ft::reverse_iterator<iterator>
 	 							    reverse_iterator;
  protected:
 	 Alloc  						allocator;

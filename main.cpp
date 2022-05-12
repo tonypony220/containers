@@ -22,8 +22,8 @@
 // stack
 
 #define stack_test
-//
-//// - - - -  vector - - - - - 
+
+// - - - -  vector - - - - - 
 #define vector_push_back
 #define insert_end
 #define insert_iter
@@ -42,7 +42,6 @@
 #define assign_test
 #define ctor_copy
 
-   /*  map */
 #define key_const
 #define map_ctor
 #define map_equal
