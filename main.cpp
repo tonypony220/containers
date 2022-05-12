@@ -21,40 +21,40 @@
 
 // stack
 
-//#define stack_test
+#define stack_test
 
 // - - - -  vector - - - - - 
-//#define vector_push_back
-//#define insert_end
-//#define insert_iter
-//#define front_back
-//#define erase_iter
-//#define erase_pos
-//#define const_vector
-//#define resize_vector
-//#define ctor
-//#define ctor_iter
-//#define equal
-//#define val_swap
-//#define val_pop
-//#define val_const
-//#define reverse
-//#define assign_test
-//#define ctor_copy
+#define vector_push_back
+#define insert_end
+#define insert_iter
+#define front_back
+#define erase_iter
+#define erase_pos
+#define const_vector
+#define resize_vector
+#define ctor
+#define ctor_iter
+#define equal
+#define val_swap
+#define val_pop
+#define val_const
+#define reverse
+#define assign_test
+#define ctor_copy
 
-	 /*  map */
-//#define key_const
-//#define map_ctor
-//#define map_equal
-//#define map_less
-//#define map_operator_assign
-//#define map_iter
-//#define map_reverse_iter
-//#define map_insert_hint
-//#define map_operator_random_access
-//#define map_utilz
-//#define map_erase
-//#define map_count
+       /*  map */
+#define key_const
+#define map_ctor
+#define map_equal
+#define map_less
+#define map_operator_assign
+#define map_iter
+#define map_reverse_iter
+#define map_insert_hint
+#define map_operator_random_access
+#define map_utilz
+#define map_erase
+#define map_count
 
 #define set_ctor
 #define set_equal
@@ -297,10 +297,10 @@ bool maps_equal(const A & a, const B & b, Key prin, Val) {
 	map_to_2vecs(a, a_keys, a_vals);
 	map_to_2vecs(b, b_keys, b_vals);
 	if (prin) {
-		print_container(a_keys);
-		print_container(b_keys);
-		print_container(a_vals);
-		print_container(b_vals);
+		ft::print_container(a_keys);
+		ft::print_container(b_keys);
+		ft::print_container(a_vals);
+		ft::print_container(b_vals);
 	}
 	return (a_keys == b_keys) && (a_vals == b_vals);
 }
@@ -662,9 +662,9 @@ int main() {
 		std::vector<int> stdVector(20);
 
 		p("STD:");
-		print_container(stdVector);
+		ft::print_container(stdVector);
 		p("FT:");
-		print_container(ftVector);
+		ft::print_container(ftVector);
 		ft::vector<int>::iterator ift = ftVector.begin();
 		std::vector<int>::iterator istd = stdVector.begin();
 		while (ok && ift != ftVector.end() && istd != stdVector.end())
@@ -695,9 +695,9 @@ int main() {
 //		ftVector.push_back(1);
 
 		p("STD:");
-		print_container(stdVector);
+		ft::print_container(stdVector);
 		p("FT:");
-		print_container(ftVector);
+		ft::print_container(ftVector);
 		ft::vector<int>::iterator  ift = ftVector.begin();
 		std::vector<int>::iterator istd = stdVector.begin();
 		if (ftVector.size() != stdVector.size())
