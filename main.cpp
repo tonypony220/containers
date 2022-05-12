@@ -21,45 +21,50 @@
 
 // stack
 
-//#define stack_test
+#define stack_test
+//
+//// - - - -  vector - - - - - 
+#define vector_push_back
+#define insert_end
+#define insert_iter
+#define front_back
+#define erase_iter
+#define erase_pos
+#define const_vector
+#define resize_vector
+#define ctor
+#define ctor_iter
+#define equal
+#define val_swap
+#define val_pop
+#define val_const
+#define reverse
+#define assign_test
+#define ctor_copy
 
-// - - - -  vector - - - - - 
-//#define vector_push_back
-//#define insert_end
-//#define insert_iter
-//#define front_back
-//#define erase_iter
-//#define erase_pos
-//#define const_vector
-//#define resize_vector
-//#define ctor
-//#define ctor_iter
-//#define equal
-//#define val_swap
-//#define val_pop
-//#define val_const
-//#define reverse
-//#define assign_test
-//#define ctor_copy
-
-	 /*  map */
-//#define key_const
-//#define map_ctor
-//#define map_equal
-//#define map_less
-//#define map_operator_assign
-//#define map_iter
-//#define map_reverse_iter
-//#define map_insert_hint
-//#define map_operator_random_access
-//#define map_utilz
-//#define map_erase
-//#define map_count
+   /*  map */
+#define key_const
+#define map_ctor
+#define map_equal
+#define map_less
+#define map_operator_assign
+#define map_iter
+#define map_reverse_iter
+#define map_insert_hint
+#define map_operator_random_access
+#define map_utilz
+#define map_erase
+#define map_count
 
 #define set_ctor
 #define set_equal
 #define set_less
 #define set_operator_ass
+#define set_iter
+#define set_reverse_iter
+#define set_utilz
+#define set_erase
+#define set_count
 
 // the work...
 //auto t_end = std::chrono::high_resolution_clock::now();
@@ -268,6 +273,18 @@ void fill_map(ft::map<key, val> & m, int num = 40) {
 		 m.insert(ft::make_pair(i, i));
 	}
 }
+template <class key, class val>
+void fill_map(std::map<key, val> & m, int num = 40) {
+	for (int i = 0; i < num; i++) {
+		 m.insert(std::make_pair(i, i));
+	}
+}
+/* template <class M> */
+/* void fill_map(M & m, int num = 40) { */
+/* 	for (int i = 0; i < num; i++) { */
+/* 		 m.insert(ft::make_pair(i, i)); */
+/* 	} */
+/* } */
 /* template <class key, class val> */
 /* void fill_map(std::map<key, val> & m, int num = 40) { */
 /* 	for (int i = 0; i < num; i++) { */
@@ -297,12 +314,13 @@ bool maps_equal(const A & a, const B & b, Key prin, Val) {
 	map_to_2vecs(a, a_keys, a_vals);
 	map_to_2vecs(b, b_keys, b_vals);
 	if (prin) {
-		print_container(a_keys);
-		print_container(b_keys);
-		print_container(a_vals);
-		print_container(b_vals);
+		ft::print_container(a_keys);
+		ft::print_container(b_keys);
+		ft::print_container(a_vals);
+		ft::print_container(b_vals);
 	}
-	return (a_keys == b_keys) && (a_vals == b_vals);
+	bool res = a_keys == b_keys;
+	return res && (a_vals == b_vals);
 }
 
 template <class v>
@@ -407,7 +425,7 @@ int main() {
 		/* f.reserve(x); */
 		for (int i = 0; i < x; i++) {
 			/* std::string str(itoa(i)); */
-			std::string str("A");
+			std::string str(itoa(i));
 			f.push_back(str);
 			/* print_container(f); */
 		}
@@ -454,7 +472,7 @@ int main() {
 		ftVector.insert(ftVector.begin()+1, 100, 200);
 		ftVector.insert(ftVector.begin(), 10, 20);
 		t.end2();
-		t.diff();
+		// t.diff();  // over
 
 
 		ft::vector<int>::iterator  ift = ftVector.begin();
@@ -593,7 +611,7 @@ int main() {
 		t.arm2();
 		ft::vector<int> f(ftVector);
 		t.end2();
-		t.diff();
+		/* t.diff(); */  // over
 		put(compare(s, f));
 		p("\n ------- operator = ------- ");
 		t.arm1();
@@ -602,7 +620,7 @@ int main() {
 		t.arm2();
 		f = ftVector;
 		t.end2();
-		t.diff();
+		/* t.diff(); */  // over
 		put(compare(s, f));
 	}
 
@@ -662,9 +680,9 @@ int main() {
 		std::vector<int> stdVector(20);
 
 		p("STD:");
-		print_container(stdVector);
+		ft::print_container(stdVector);
 		p("FT:");
-		print_container(ftVector);
+		ft::print_container(ftVector);
 		ft::vector<int>::iterator ift = ftVector.begin();
 		std::vector<int>::iterator istd = stdVector.begin();
 		while (ok && ift != ftVector.end() && istd != stdVector.end())
@@ -695,9 +713,9 @@ int main() {
 //		ftVector.push_back(1);
 
 		p("STD:");
-		print_container(stdVector);
+		ft::print_container(stdVector);
 		p("FT:");
-		print_container(ftVector);
+		ft::print_container(ftVector);
 		ft::vector<int>::iterator  ift = ftVector.begin();
 		std::vector<int>::iterator istd = stdVector.begin();
 		if (ftVector.size() != stdVector.size())
@@ -1402,7 +1420,7 @@ int main() {
 		timer t;
 		 ft::set<std::string>  f;
 		std::set<std::string>  s;
-		int x = 100;
+		/* int x = 100; */
 		fill_set(f, "", 200);
 		fill_set(s, "", 200);
 
@@ -1418,6 +1436,236 @@ int main() {
 		t.diff();
 
 		put(f1 == f);
+	}
+#endif
+#ifdef set_iter
+	{
+		p("\n ------- set_iterator ------- ");
+//		ft::map<int, int>  f;
+		timer t;
+		 ft::set<std::string>  f;
+		std::set<std::string>  s;
+		int num = 10000;
+		p("num elements: ", num);
+		fill_set(f, "", num);
+		fill_set(s, "", num);
+		 ft::set<std::string>::iterator itf = f.begin();
+		std::set<std::string>::iterator its = s.begin();
+//		p(f.size());
+//		p(s.size());
+		t.arm2();
+		for (int i = 0; i < num - 100; itf++, i++);
+		for (int i = 0; i < num/2 ; itf--, i++);
+		t.end2();
+
+		t.arm1();
+		for (int i = 0; i < num - 100; its++, i++);
+		for (int i = 0; i < num/2 ; its--, i++);
+		t.end1();
+		t.diff();
+		put(*itf == *its);
+	}
+#endif
+#ifdef set_reverse_iter
+	{
+		p("\n ------- set_reverse_iter ------- ");
+//		ft::map<int, int>  f;
+		timer t;
+		 ft::set<std::string>  f;
+		std::set<std::string>  s;
+		int num = 10000;
+		p("num elements: ", num);
+		fill_set(f, "", num);
+		fill_set(s, "", num);
+		 ft::set<std::string>::reverse_iterator itf = f.rbegin();
+		std::set<std::string>::reverse_iterator its = s.rbegin();
+
+		t.arm2();
+		for (int i = 0; i < num - 100; itf++, i++);
+		for (int i = 0; i < num/2 ; itf--, i++);
+		t.end2();
+
+		t.arm1();
+		for (int i = 0; i < num - 100; its++, i++);
+		for (int i = 0; i < num/2 ; its--, i++);
+		t.end1();
+		t.diff();
+		put(*itf == *its);
+	}
+#endif
+#ifdef set_utilz
+	{
+		p("\n ------- set_utilz ------- ");
+		timer t;
+		 ft::set<std::string>  f;
+		std::set<std::string>  s;
+		p("empty");
+		put(f.empty() == s.empty());
+		int num = 10000;
+		p("num elements: ", num);
+		fill_set(f, "", num);
+		fill_set(s, "", num);
+		p("size");
+		put( f.size() == s.size() );
+		/* p("max size"); */
+		/* put( f.max_size() == s.max_size() ); */
+		p("clear");
+		f.clear(); s.clear();	
+		put( f.size() == s.size() );
+	}
+#endif
+#ifdef set_erase
+	{
+		p("\n ------- set_erase ------- ");
+//		ft::map<int, int>  f;
+		timer t;
+		 ft::set<std::string>  f;
+		std::set<std::string>  s;
+		int num = 10000;
+		p("num elements: ", num);
+		fill_set(f, "", num);
+		fill_set(s, "", num);
+
+		 ft::set<std::string>::iterator itf = f.begin();
+		std::set<std::string>::iterator its = s.begin();
+		 ft::set<std::string>::iterator itf2 = itf;
+		std::set<std::string>::iterator its2 = its;
+		for (int i = 0; i < 500; itf2++, i++);
+		for (int i = 0; i < 500; its2++, i++);
+		for (int i = 0; i < 50; itf++, i++);
+		for (int i = 0; i < 50; its++, i++);
+
+		p("\n\t", "range");
+		t.arm2();
+		f.erase(itf, itf2);
+		t.end2();
+
+		t.arm1();
+		s.erase(its, its2);
+		t.end1();
+
+		t.diff();
+		put(compare(s, f));
+
+		p("\n\t", "pos");
+		itf = f.begin();
+		its = s.begin();
+		for (int i = 0; i < 50; itf++, i++);
+		for (int i = 0; i < 50; its++, i++);
+		t.arm2();
+		f.erase(itf);
+		t.end2();
+
+		t.arm1();
+		s.erase(its);
+		t.end1();
+
+		t.diff();
+		put(compare(s, f));
+
+		p("\n\t", "val");
+		std::string val(itoa(num - 100));
+		t.arm2();
+		 ft::set<std::string>::size_type retf = f.erase(val);
+		t.end2();
+
+		t.arm1();
+		std::set<std::string>::size_type rets = s.erase(val);
+		t.end1();
+
+		t.diff();
+		put(retf == rets);
+
+		itf = f.end();
+		itf--;
+		its = s.end();
+		its--;
+		t.arm2();
+		retf = f.erase(*itf);
+		t.end2();
+
+		t.arm1();
+		rets = s.erase(*its);
+		t.end1();
+
+		t.diff();
+		put(retf == rets);
+		put(compare(s, f));
+
+	}
+	{
+		/* int _ratio = 1; */
+		/*  ft::set<int>  st; */
+		/* for (int i = 0; i < 30 * _ratio; ++i) */
+		/* 	st.insert(i); */
+		/* typename ft::set<int>::iterator it = st.begin(); */
+		/* p(*it); */
+		/* p(st.erase(-5)); */
+		/* p(st.size()); */
+		/* p(st.erase(0)); */
+		/* p(st.size()); */
+		/* typename ft::set<int>::iterator it4 = st.begin(); */
+		/* for (; it4 != st.end(); it4 = st.begin()) */
+		/* 	st.erase(*it4); */
+		/* p("size: ", st.size()); */
+		{
+			std::set<int>  st;
+		    std::set<int>::iterator it2 = st.end();
+			it2--;
+			p("ok");
+		}
+		/* ft::set<int>  st; */
+		/* typename ft::set<int>::iterator it2 = st.end(); */
+		/* it2--; */
+
+	}
+#endif
+#ifdef map_count
+	{
+		p("\n ------- count ------ ");
+//		ft::map<int, int>  f;
+		timer t;
+		 ft::set<std::string>  f;
+		std::set<std::string>  s;
+		int x = 100;
+		p("num elements: ", x);
+
+		fill_set(f, "", x);
+		fill_set(s, "", x);
+		std::string val(itoa(x - x/10));
+		put(f.count(val) == s.count(val));
+
+		p("\n ------- find ------ ");
+		std::string v(itoa(x - x/20));
+		t.arm2();
+		 ft::set<std::string>::iterator itf = f.find(v);
+		t.end2();
+
+		t.arm1();
+		std::set<std::string>::iterator its = s.find(v);
+		t.end1();
+
+		t.diff();
+		put(*itf == *its);
+
+		v = itoa(-12);
+		itf = f.find(v);
+		its = s.find(v);
+
+		put(itf == f.end());
+		put(its == s.end());
+		p("\n ------- bounds ------ ");
+		t.arm1();
+		itf = f.lower_bound(val);
+		t.end2();
+		t.arm1();
+		its = s.lower_bound(val);
+		t.end1();
+		/* t.diff(); :) */ 
+		put(*itf == *its);
+		itf = f.upper_bound(val);
+		its = s.upper_bound(val);
+		put(*itf == *its);
 	}
 #endif
 	return 0;
