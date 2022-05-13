@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef> // ptrdiff
 namespace ft {
 
 	struct input_iterator_tag {};

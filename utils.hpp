@@ -4,7 +4,8 @@
 # define GREEN    "\033[0;32m"
 # define RESET    "\033[0;0m"
 
-void put( bool x) {
+template <class N> // bool expected 
+void put(N x) {
 	(x && (std::cout << GREEN "OK!" RESET << std::endl)) || (std::cout << RED "FAIL!" RESET << std::endl);
 }
 template <class T>
