@@ -44,8 +44,10 @@ namespace ft {
     iterator    	end_of_storage;
 
 	reference 			   aat(size_type n) {
-		  if (n > size() - 1)
-			  throw std::out_of_range("");
+//		  p(n);
+//		  p(size());
+		  if (n >= size())
+			  throw std::out_of_range("out of range");
 		  return start[n];
 	}
 
