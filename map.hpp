@@ -5,7 +5,7 @@
 
 namespace ft {
  template <class Key, class T, class Compare = std::less<Key>,
-		   class Allocator = std::allocator<treenode<ft::pair<const Key, T> > > >
+		   class Alloc = std::allocator<ft::pair<const Key, T> > >
  class map {
  public:
 // typedefs:
@@ -13,6 +13,8 @@ namespace ft {
 	 typedef T 	  					data_type;
 	 typedef ft::pair<const Key, T> value_type;
 	 typedef Compare 				key_compare;
+	 typedef typename Alloc::template rebind<treenode<value_type> >::other
+									Allocator;
 
 	 class value_compare
 		 : public ft::binary_function<value_type, value_type, bool> {

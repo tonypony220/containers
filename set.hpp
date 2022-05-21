@@ -4,13 +4,15 @@
 
 namespace ft {
  template <class Key, class Compare = std::less<Key>,
-		   class Allocator = std::allocator<treenode<Key>  > >
+		   class Alloc = std::allocator<Key> >
  class set {
  public:
 // typedefs:
 	 typedef Key  					key_type;
 	 typedef Key 					value_type;
 	 typedef Compare 				key_compare;
+	 typedef typename Alloc::template rebind<treenode<Key> >::other
+									Allocator;
  private:
   typedef rb_tree<key_type, value_type, 
                   identity<value_type>, key_compare, Allocator> rep_type;

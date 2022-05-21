@@ -189,7 +189,7 @@ namespace ft {
 		if (begin_old) {
 			iterator j = begin_new;
 			for ( iterator i = begin_old; i != finish; i++, j++ ) {
-				// can't use this because of dirty memory. Only if memset 
+				// can't use this because of dirty memory. can't memset to 0 also
 				// ft::__copy(begin_old, finish, start);
 				// construct(j, *i) using this also seems well
 				allocator.construct(j, *i); 
@@ -231,7 +231,10 @@ namespace ft {
 		allocator.construct(finish++, x);
 		/* construct(finish, x); */	
 	}
-	void 	 			   pop_back() { finish--; }
+	void 	 			   pop_back() { 
+		finish->~T();
+		finish--; 
+	}
 
 	iterator 			   insert(iterator position, const T & x) {
 		size_type n = position - begin();
@@ -243,34 +246,47 @@ namespace ft {
 //    0  1  2  3  4  5  6  7  8  9 10 11 12
 //   [a][b][c][a][b][A][B][ ][ ][ ][ ][ ][ ]
 //				         n = 2
-//             p        l  f
+//             p        l  f  i
 //    0  1  2  3  4  5  6  7  8  9 10 11 12
 //   [a][b][c][a][b][A][B][ ][ ][ ][ ][ ][ ]
 //				         n = 2
 
-//    p  l  i              f
+//    p                 l  f  i
 //    0  1  2  3  4  5  6  7  8  9 10 11 12
 //   [a][b][c][a][b][A][B][ ][ ][ ][ ][ ][ ]
 //				         n = 2
+//             l  p        f  i         
+//    0  1  2  3  4  5  6  7  8  9  A  B  C
+//   [a][b][c][a][b][A][B][ ][ ][b][A][B][ ]
+//				         n = 5
+// l  pf                       
+//    0  1  2  3  4  5  6  7  8  9 10 11 12
+//   [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+//				         n = 1 
 	void 	 			   insert(iterator position, size_type n, const T & x) {
 		size_type tmp(position - start);
 		size_type new_size(size() + n + std::max(position - finish, (long)0));
-//		while (new_size < capacity())
-//			new_size *= 2;
 		if (new_size > capacity()) {
 			reserve(new_size);
-			position = begin() + tmp;
+			position = begin() + tmp; // refresh iterator
 		}
+
 		iterator last = end() - 1;
-		/// position could be equal finish. and make one excess move
-		if (position <= finish) {
+		if (position <= finish) { // position could be equal finish. and make one excess move
 			for (iterator it = n + last; last != position - 1; it--, last--) {
-				allocator.construct(it, *last); // *it = *last; <- wrong cause of dirty memory
+				if ( it >= finish )
+					allocator.construct(it, *last); // *it = *last; <- wrong cause of dirty memory
+				else 
+					*it = *last;
 			}
 		}
+		size_type elems_after = finish - position;
 		finish = begin() + new_size;
-		for (; n > 0; n--)
-			allocator.construct(position++, x); //*position++ = x; <- wrong cause of dirty memory
+		for (; elems_after > 0 && n > 0; elems_after--, n--)
+			*position++ = x;
+		for (; n > 0; n--) {
+			allocator.construct(position++, x); // *position++ = x; <- wrong cause of dirty memory
+		}
 
 	}
 	template <class InputIterator>
@@ -288,9 +304,10 @@ namespace ft {
 			*position = *(position + 1);
 			position++;
 		}
+		finish->~T();
 		finish--;
 	}
-	//    f        l           f
+	//    f                    l
 	//    0  1  2  3  4  5  6  7  8  9 10 11 12
 	//   [a][b][c][a][b][A][B][ ][ ][ ][ ][ ][ ]
 	//				         n = 2
@@ -300,6 +317,9 @@ namespace ft {
 			first++;
 			last++;
 		}
+		iterator f = first - 1;
+		while ( ++f != finish )
+			f->~T();
 		finish = first;
 	}
     void     			   swap(vector<T,Allocator> & x) {
@@ -323,13 +343,7 @@ namespace ft {
 //			if (it2 == other.end())
 //				finish = it;
 		}
-
-
-//		std::swap(end_of_storage, other.begin() + other.capacity());
-//		std::swap(start, other.begin());
-//		std::swap(finish, other.end());
-//		std::swap(allocator, other.get_allocator());
-	  void     			   clear() { finish = start; }
+	  void     			   clear() { erase(begin(), end()); }
   };
 
 

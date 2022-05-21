@@ -7,3 +7,5 @@ a.out
 ft_con*
 *.o
 out.dSYM
+log
+tags

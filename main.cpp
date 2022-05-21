@@ -1,4 +1,5 @@
 #include "utils.hpp"
+#include <unistd.h>
 #include "stack.hpp"
 #include "vector.hpp"
 #include <vector>
@@ -42,7 +43,7 @@
 #define assign_test
 #define ctor_copy
 
-#define key_const
+//#define key_const
 #define map_ctor
 #define map_equal
 #define map_less
@@ -444,7 +445,7 @@ int main() {
 		std::vector<int> smpl;
 		ft::vector<int> ftVector;
 		std::vector<int> stdVector;
-		for (int i = 0; i < 20000; i++) {
+		for (int i = 0; i < 10; i++) {
 			smpl.push_back(i);
 			ftVector.push_back(i);
 			stdVector.push_back(i);
@@ -989,8 +990,8 @@ int main() {
 		int x = 10000;
 		p("num elements: ", x);
 		for (int i = 0; i < x; i++) {
-			f.insert( ft::make_pair(i, "asdf"));
-			s.insert(std::make_pair(i, "asdf"));
+			f.insert( ft::make_pair(i, "asdfffffffffffffffffffffffffffffffffffffffff"));
+			s.insert(std::make_pair(i, "asdfffffffffffffffffffffffffffffffffffffffff"));
 		}
 		std::map<int, std::string>  s1;
 		ft::map<int, std::string>   f1;
@@ -1306,9 +1307,9 @@ int main() {
 		timer t;
 		 ft::set<std::string>  f;
 		std::set<std::string>  s;
-		int x = 100;
+		int x = 10;
 		for (int i = 0; i < x; i++) {
-			std::string str(itoa(i));
+			std::string str("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + itoa(i));
 			f.insert(str);
 			s.insert(str);
 		}
@@ -1590,6 +1591,7 @@ int main() {
 		t.diff();
 		put(retf == rets);
 		put(compare(s, f));
+		p("\n\t", "val end");
 
 	}
 	{
@@ -1608,9 +1610,9 @@ int main() {
 		/* 	st.erase(*it4); */
 		/* p("size: ", st.size()); */
 		{
-			std::set<int>  st;
-		    std::set<int>::iterator it2 = st.end();
-			it2--;
+		//	std::set<int>  st;
+		//    std::set<int>::iterator it2 = st.end();
+			//it2++;
 			p("ok");
 		}
 		/* ft::set<int>  st; */
@@ -1667,6 +1669,7 @@ int main() {
 		put(*itf == *its);
 	}
 #endif
+	system("leaks out");
 	return 0;
 }
 

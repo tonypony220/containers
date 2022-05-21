@@ -68,5 +68,9 @@ namespace ft
 		new (p) T1(value);
        // new (reinterpret_cast<void*>(p)) T1 ( value );
 	}
+	template <class T>
+	inline void destroy(T* pointer) {
+		pointer->~T();
+	}
 
 }

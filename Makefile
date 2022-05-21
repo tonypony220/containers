@@ -2,10 +2,10 @@ SRCS	=   main.cpp tree.cpp
 SRCSSUB	=   main_subject.cpp tree.cpp #main.cpp
 OBJS	=	${SRCS:.cpp=.o}
 OBJSSUB	=	${SRCSSUB:.cpp=.o}
-CFLAGS	=   -O0 -g -Wall -Wextra -Werror -Wmacro-redefined --std=c++98 # -g -fsanitize=address -fsanitize=undefined 
+CFLAGS	=   -O0 -Wall -Wextra -Werror -Wmacro-redefined --std=c++98 #-g  -fsanitize=address #-fsanitize=undefined 
 CC		=	clang++
 RM		=	-rm	-f
-HEAD	=   vector.hpp algobase.hpp iter.hpp map.hpp pair.hpp utils.hpp tree.hpp stack.hpp
+HEAD	=   vector.hpp algobase.hpp iter.hpp map.hpp pair.hpp utils.hpp tree.hpp stack.hpp set.hpp
 NAME	=	out
 
 %.o: %.cpp $(HEAD)
